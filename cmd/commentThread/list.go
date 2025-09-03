@@ -15,7 +15,7 @@ import (
 
 const (
 	listShort    = "List YouTube comment threads"
-	listLong     = "List YouTube comment threads"
+	listLong     = "List YouTube comment threads with pagination support"
 	listVidUsage = "Returns the comment threads of the specified video"
 )
 
@@ -42,6 +42,8 @@ func init() {
 	)
 	listCmd.Flags().StringVarP(&output, "output", "o", "table", pkg.TableUsage)
 	listCmd.Flags().StringVarP(&jpath, "jsonpath", "j", "", pkg.JPUsage)
+	listCmd.Flags().StringVar(&pageToken, "pageToken", "", "The pageToken parameter identifies a specific page to retrieve")
+	listCmd.Flags().BoolVar(&fetchAll, "fetchAll", false, "Fetch all pages of results (use with caution)")
 }
 
 var listCmd = &cobra.Command{
@@ -115,6 +117,14 @@ var listTool = mcp.NewTool(
 		"jsonpath", mcp.DefaultString(""),
 		mcp.Description(pkg.JPUsage), mcp.Required(),
 	),
+	mcp.WithString(
+		"pageToken", mcp.DefaultString(""),
+		mcp.Description("The pageToken parameter identifies a specific page to retrieve"),
+	),
+	mcp.WithString(
+		"fetchAll", mcp.Enum("true", "false", ""),
+		mcp.DefaultString(""), mcp.Description("Fetch all pages of results (use with caution - may hit quota limits)"),
+	),
 )
 
 func listHandler(
@@ -142,8 +152,12 @@ func listHandler(
 	}
 	output, _ = args["output"].(string)
 	jpath, _ = args["jsonpath"].(string)
+	pageToken, _ = args["pageToken"].(string)
+	fetchAllStr, _ := args["fetchAll"].(string)
+	fetchAll = fetchAllStr == "true"
 
-	slog.InfoContext(ctx, "commentThread list started")
+	slog.InfoContext(ctx, "commentThread list started",
+		"pageToken", pageToken, "fetchAll", fetchAll, "fetchAllStr", fetchAllStr)
 
 	var writer bytes.Buffer
 	err := list(&writer)
@@ -173,6 +187,8 @@ func list(writer io.Writer) error {
 		commentThread.WithSearchTerms(searchTerms),
 		commentThread.WithTextFormat(textFormat),
 		commentThread.WithVideoId(videoId),
+		commentThread.WithPageToken(pageToken),
+		commentThread.WithFetchAll(fetchAll),
 		commentThread.WithService(nil),
 	)
 

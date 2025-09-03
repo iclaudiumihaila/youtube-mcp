@@ -34,6 +34,8 @@ var (
 	parts                        []string
 	output                       string
 	jpath                        string
+	pageToken                    string
+	fetchAll                     bool
 )
 
 var commentThreadCmd = &cobra.Command{

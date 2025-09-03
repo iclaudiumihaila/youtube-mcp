@@ -22,11 +22,12 @@ const (
 )
 
 type svc struct {
-	Cacheable  bool   `yaml:"cacheable" json:"cacheable"`
-	Credential string `yaml:"credential" json:"credential"`
-	CacheToken string `yaml:"cache_token" json:"cache_token"`
-	service    *youtube.Service
-	ctx        context.Context
+	Cacheable     bool   `yaml:"cacheable" json:"cacheable"`
+	Credential    string `yaml:"credential" json:"credential"`
+	CacheToken    string `yaml:"cache_token" json:"cache_token"`
+	CacheTokenPath string `yaml:"cache_token_path" json:"cache_token_path"`
+	service       *youtube.Service
+	ctx           context.Context
 }
 
 type Svc interface {
@@ -114,10 +115,12 @@ func WithCacheToken(token string, fsys fs.FS) Option {
 				os.Exit(1)
 			}
 			s.CacheToken = string(tokenBytes)
+			s.CacheTokenPath = absToken
 			s.Cacheable = true
 			return
 		} else if os.IsNotExist(err) && strings.HasSuffix(token, ".json") {
-			s.CacheToken = token
+			s.CacheTokenPath = absToken
+			s.CacheToken = ""
 			s.Cacheable = true
 			return
 		}

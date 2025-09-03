@@ -70,7 +70,14 @@ func (s *svc) refreshClient() (client *http.Client) {
 	if err != nil {
 		client, authedToken = s.newClient(config)
 		if s.Cacheable {
-			s.saveToken(cacheTokenFile, authedToken)
+			tokenPath := s.CacheTokenPath
+			if tokenPath == "" {
+				tokenPath = cacheTokenFile
+			}
+			s.saveToken(tokenPath, authedToken)
+			// Update the cached token in memory
+			tokenBytes, _ := json.Marshal(authedToken)
+			s.CacheToken = string(tokenBytes)
 		}
 		return client
 	}
@@ -80,7 +87,14 @@ func (s *svc) refreshClient() (client *http.Client) {
 		authedToken, err = tokenSource.Token()
 		if err != nil && s.Cacheable {
 			client, authedToken = s.newClient(config)
-			s.saveToken(cacheTokenFile, authedToken)
+			tokenPath := s.CacheTokenPath
+			if tokenPath == "" {
+				tokenPath = cacheTokenFile
+			}
+			s.saveToken(tokenPath, authedToken)
+			// Update the cached token in memory
+			tokenBytes, _ := json.Marshal(authedToken)
+			s.CacheToken = string(tokenBytes)
 			return client
 		} else if err != nil {
 			slog.Error(refreshTokenFailed, "error", err)
@@ -88,7 +102,14 @@ func (s *svc) refreshClient() (client *http.Client) {
 		}
 
 		if authedToken != nil && s.Cacheable {
-			s.saveToken(cacheTokenFile, authedToken)
+			tokenPath := s.CacheTokenPath
+			if tokenPath == "" {
+				tokenPath = cacheTokenFile
+			}
+			s.saveToken(tokenPath, authedToken)
+			// Update the cached token in memory
+			tokenBytes, _ := json.Marshal(authedToken)
+			s.CacheToken = string(tokenBytes)
 		}
 		return config.Client(s.ctx, authedToken)
 	}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "youtube": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@eat-pray-ai/yutu-mcp",
+        "mcp"
+      ],
+      "env": {
+        "YUTU_CREDENTIAL": "~/.config/yutu-mcp/client_secret.json",
+        "YUTU_CACHE_TOKEN": "~/.config/yutu-mcp/youtube.token.json"
+      }
+    }
+  }
+}

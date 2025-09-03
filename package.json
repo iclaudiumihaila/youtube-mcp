@@ -1,0 +1,58 @@
+{
+  "name": "yutu-mcp",
+  "version": "1.0.0",
+  "description": "YouTube MCP server - fully functional Model Context Protocol server for YouTube automation",
+  "keywords": [
+    "mcp",
+    "youtube",
+    "automation",
+    "api",
+    "claude",
+    "ai"
+  ],
+  "homepage": "https://github.com/claudiumihaila/youtube-mcp",
+  "bugs": {
+    "url": "https://github.com/claudiumihaila/youtube-mcp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claudiumihaila/youtube-mcp.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Claudiu Mihaila <iclaudiumihaila@gmail.com>",
+  "type": "module",
+  "bin": {
+    "yutu-mcp": "./bin/index.js"
+  },
+  "files": [
+    "bin/",
+    "binaries/",
+    "setup-google-cloud.js",
+    "client_secret.example.json",
+    "claude-config-example.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "node bin/postinstall.js",
+    "test": "node bin/index.js mcp --help"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}

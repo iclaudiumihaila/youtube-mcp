@@ -1,0 +1,60 @@
+# Source files
+*.go
+go.mod
+go.sum
+main.go
+
+# Directories
+cmd/
+pkg/
+scripts/
+asset/
+winres/
+.github/
+.git/
+
+# Build files
+*.bazel
+.bazelignore
+.bazelrc
+.bazelversion
+MODULE.bazel
+MODULE.bazel.lock
+BUILD.bazel
+
+# Config files
+.goreleaser.yaml
+.gitignore
+Dockerfile
+
+# Documentation (keep README.md)
+FEATURES.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+CLAUDE.md
+
+# Test files
+*_test.go
+*.test
+cover.out
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.log
+
+# Keep only the necessary files for npm package
+!bin/
+!binaries/
+!README.md
+!LICENSE
+!package.json
